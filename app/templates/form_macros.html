@@ -1,0 +1,29 @@
+{% macro make_input_prepend(fa_tag) %}
+<div class="input-group-prepend">
+  <span class="input-group-text bg-white border border-right-0">
+    <i class="{{ fa_tag }}"></i>
+  </span>
+</div>
+{% endmacro %}
+
+{% macro make_input_group(fa_tag, form_field, include_errors=True, id=None) %}
+<div class="input-group input-group-lg">
+  {{ make_input_prepend(fa_tag) }}
+  
+  {% if id %}
+  {{ form_field(class_="form-control border border-left-0",
+      placeholder=form_field.label.text, id=id) }}
+  {% else %}
+  {{ form_field(class_="form-control border border-left-0",
+      placeholder=form_field.label.text) }}
+  {% endif %}
+</div>
+
+{% if include_errors %}
+<div class="form-group" {% if id %} id={{ id }}-messages {% endif %}>
+  {% for m in form_field.errors %}
+    <p class="text-error form-text">{{ m }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+{% endmacro %}
