@@ -1,29 +1,19 @@
-{% extends "base.html" %}
+{% extends "card_form.html" %}
 {% set active_page = "login" %}
-{% import "form_macros.html" as form_macros %}
 
-{% block content %}
-<div class="card mx-auto" style="width: 90%;">
-  <div class="card-body">
-    <form method="POST" action="" id="login">
-      {{ form.hidden_tag() }}
+{% block form_content %}
+{% call form_macros.render_form(form=form, id="login") %}
+  {{ form_macros.render_input_text(
+        fa_tag="fas fa-envelope", 
+        form_field=form.email,
+        id="email") }}
 
-      {{ form_macros.make_input_group(
-            fa_tag="fas fa-envelope", 
-            form_field=form.email,
-            id="email") }}
+  {{ form_macros.render_input_text(
+        fa_tag="fas fa-key",
+        form_field=form.password,
+        id="password") }}
 
-      {{ form_macros.make_input_group(
-            fa_tag="fas fa-key",
-            form_field=form.password,
-            id="password") }}
-
-      <p>{{ form.remember_me(class_="form-check-input", 
-        type="checkbox", id="rememberMe") }} {{form.remember_me.label}}</p>
-      
-      <p>{{ form.submit(class_="btn btn-primary btn-lg") }}</p>
-    </form>
-    <hr>
-  </div>
-</div>
+  <p>{{ form.remember_me(class_="form-check-input", 
+    type="checkbox", id="rememberMe") }} {{form.remember_me.label}}</p>
+{% endcall %}
 {% endblock %}

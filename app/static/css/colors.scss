@@ -29,13 +29,15 @@ $colors: (
 	                    alt: #9F9891)
 );
 
-$primary-color: map-get($colors, wellesley-blue);
-$secondary-color: map-get($colors, wellesley-cream);
-$error-color: map-get($colors, wellesley-red);
-$success-color: map-get($colors, olive-green);
+$primary-color   : map-get($colors, wellesley-blue);
+$secondary-color : map-get($colors, wellesley-cream);
+$error-color     : map-get($colors, wellesley-red);
+$success-color   : map-get($colors, olive-green);
+
+$colors: map-merge($colors, (primary: $primary-color));
+$colors: map-merge($colors, (secondary: $secondary-color));
 
 // END COLOR DEFINITIONS //
-
 
 // Define useful mixins
 @mixin btn-color($color-map, $color-type) {

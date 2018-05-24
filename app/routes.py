@@ -20,7 +20,7 @@ def index():
 
 @app.route("/login/")
 def login():
-    params = {}
+    params = {"title": "Login"}
     form = LoginForm()
     params["form"] = form
     return render_template("login.html", **params)

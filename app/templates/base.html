@@ -7,6 +7,14 @@ description: basic html template that other html pages inherit from
 
 {% set site_name = "Better Than Tutor Trac" %}
 
+<!-- useful macros -->
+{% macro make_nav_item(name, text, url=None) %}
+<li class="nav-item {{ 'active' if active_page == name }}">
+  <a class="nav-link" 
+    href="{{ url_for(name) if url == None else url }}">{{ text }}</a>
+</li>
+{% endmacro %}
+
 <html lang="en">
 
 <head>
@@ -45,17 +53,11 @@ description: basic html template that other html pages inherit from
 			<ul class="nav navbar-nav ml-auto">
 			  {% if isLoggedIn %}
 			  <!-- insert/view session options visible if user is logged in -->
-				<li class="nav-item {{ 'active' if activePage == 'viewSessions' }}">
-					<a class="nav-link" href="{{ url_for('viewSessions') }}">View Sessions</a>
-				</li>
+        {{ make_nav_item(name='view_sessions', text='View Sessions') }}
 				<!-- login/logout options via CAS -->
-				<li class="nav-item">
-          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-				</li>
+        {{ make_nav_item(name='logout', text='Logout', url='/logout/') }}
 				{% else %}
-				<li class="nav-item">
-          <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-				</li>
+        {{ make_nav_item(name='login', text='Login') }}
 				{% endif %}
 			</ul>
 			

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% set activePage = "index" %}
+{% set active_page = "index" %}
 
 {% block content %}
-<h1 class="display-4">Hi{{ ' ' + user["firstName"] if isLoggedIn }}!</h1>
+<h1 class="display-4">Hi{{ ' ' + user["first_name"] if isLoggedIn }}!</h1>
 
 <p class="lead">🎉  Welcome to Better Than TutorTrac 🎉</p>
 <br>
 
-{% if isLoggedIn and user["isTutor"] %}
+{% if is_logged_in and user["is_tutor"] %}
 <div class="card mx-auto bg-light card-form">
   <div class="card-header">
     <h3>Start a Tutoring Session</h3>
@@ -24,7 +24,7 @@
         <select class="form-control custom-select border border-left-0" id="course" 
           name="course">
           <option selected disabled>Select a course</option>
-          {% for c in user['tutorCourses'] %}
+          {% for c in user['tutor_courses'] %}
           <option value="{{ c['cid'] }}">{{ c['name'] }}</option>
           {% endfor %}
         </select>
@@ -42,7 +42,7 @@
         <select class="form-control custom-select border border-left-0" id="type" 
           name="type">
           <option selected disabled>Select the type of tutoring session</option>
-          {% for t in user['sessionTypes'] %}
+          {% for t in user['session_types'] %}
           <option value="{{t}}">{{t}}</option>
           {% endfor %}
         </select>
@@ -68,14 +68,14 @@
 <!-- can jinja2 handle if/if blocks? -->
 {% endif %}
 
-{% if isLoggedIn %}
+{% if is_logged_in %}
 <div class="card mx-auto bg-light card-form">
   <div class="card-header">
     <h3>Quick Links</h3>
   </div>
   <div class="card-body">
     <ul class="list-group list-group-flush">
-      <a href="{{ url_for('viewSessions') }}" class="list-group-item bg-light">View Tutoring Sessions</a>
+      <a href="{{ url_for('view_sessions') }}" class="list-group-item bg-light">View Tutoring Sessions</a>
     </ul>
   </div>
 </div>

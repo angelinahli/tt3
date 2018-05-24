@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% set activePage = "new_session" %}
-{% import "form_macros.html" as form_macros %}
+{% set active_page = "new_session" %}
+{% import "macros/forms.html" as form_macros %}
 
 {% block content %}
 <div id="accordion">
 
   <div class="card mx-auto bg-light card-form">
     <div class="card-header" id="newSessionHeading">
-      <h3><a class="text-wellesley-blue" data-toggle="collapse" href="#newSessionForm" aria-expanded="true" aria-controls="newSessionForm">
+      <h3><a data-toggle="collapse" href="#newSessionForm" aria-expanded="true" aria-controls="newSessionForm">
         Student Login
       </a></h3>
     </div>
@@ -16,7 +16,7 @@
         <form method="POST" action="" id="newSession">
           {{ form.hidden_tag() }}
 
-          {{ form_macros.make_input_group(
+          {{ form_macros.render_input_text(
                 fa_tag="fas fa-user",
                 form_field=form.username,
                 id="username") }} 
@@ -41,7 +41,8 @@
           <br>
           {% endif %}
 
-          <button type="submit" id="submitNewSession" name="submit" value="newSession" class="btn btn-wellesley-blue btn-lg">Submit</button>
+          <button type="submit" id="submitNewSession" name="submit"
+              value="newSession" class="btn btn-primary btn-lg">Submit</button>
         </form>
       </div>
     </div>
@@ -49,7 +50,7 @@
 
   <div class="card mx-auto bg-light card-form">
     <div class="card-header" id="exitSessionHeading">
-      <h3><a class="text-wellesley-blue" data-toggle="collapse" href="#exitSessionForm" aria-expanded="false" aria-controls="exitSession">
+      <h3><a data-toggle="collapse" href="#exitSessionForm" aria-expanded="false" aria-controls="exitSession">
         Tutor Logout
       </a></3>
     </div>

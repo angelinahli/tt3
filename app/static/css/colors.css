@@ -347,4 +347,54 @@ a.text-warm-gray:focus {
   color: #9F9891 !important;
 }
 
+.bg-primary {
+  background-color: #002776 !important;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #002776;
+  border-color: #002776;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #173779;
+  border-color: #173779;
+}
+
+.text-primary {
+  color: #002776 !important;
+}
+
+a.text-primary:hover,
+a.text-primary:focus {
+  color: #173779 !important;
+}
+
+.bg-secondary {
+  background-color: #ECDEBB !important;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #ECDEBB;
+  border-color: #ECDEBB;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #D7CAAA;
+  border-color: #D7CAAA;
+}
+
+.text-secondary {
+  color: #ECDEBB !important;
+}
+
+a.text-secondary:hover,
+a.text-secondary:focus {
+  color: #D7CAAA !important;
+}
+
 /*# sourceMappingURL=colors.css.map */
