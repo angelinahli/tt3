@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% set activePage = "index" %}
+
+{% block content %}
+<h1 class="display-4">Hi{{ ' ' + user["firstName"] if isLoggedIn }}!</h1>
+
+<p class="lead">🎉  Welcome to Better Than TutorTrac 🎉</p>
+<br>
+
+{% if isLoggedIn and user["isTutor"] %}
+<div class="card mx-auto bg-light card-form">
+  <div class="card-header">
+    <h3>Start a Tutoring Session</h3>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="" id="startSession">
+
+      <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border border-right-0">
+            <i class="fas fa-graduation-cap"></i>
+          </span>
+        </div>
+        <select class="form-control custom-select border border-left-0" id="course" 
+          name="course">
+          <option selected disabled>Select a course</option>
+          {% for c in user['tutorCourses'] %}
+          <option value="{{ c['cid'] }}">{{ c['name'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <br>
+
+      <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border border-right-0">
+            <!-- not the most intuitive icon here -->
+            <i class="fas fa-users"></i> 
+          </span>
+        </div>
+        <select class="form-control custom-select border border-left-0" id="type" 
+          name="type">
+          <option selected disabled>Select the type of tutoring session</option>
+          {% for t in user['sessionTypes'] %}
+          <option value="{{t}}">{{t}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <br>
+
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="false" name="autoPopulate" id="autoPopulate">
+        <label class="form-check-label" for="autoPopulate">
+          Check box if all students attending are a part of <span id="courseName">this class</span>.
+        </label>
+      </div>
+
+      <br>
+
+      <button type="submit" class="btn btn-wellesley-blue btn-lg">Start</button>
+    </form>
+  </div>
+
+</div>
+<br>
+<!-- can jinja2 handle if/if blocks? -->
+{% endif %}
+
+{% if isLoggedIn %}
+
+<div class="card mx-auto bg-light card-form">
+  <div class="card-header">
+    <h3>Quick Links</h3>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <a href="{{ url_for('viewSessions') }}" class="list-group-item bg-light">View Tutoring Sessions</a>
+    </ul>
+  </div>
+</div>
+{% else %}
+
+<h2>Please <a href="/login/"><b>log in</b></a> to use this site! 😊</h2>
+{% endif %}
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/startTutorSession.js') }}"></script>
+{% endblock %}

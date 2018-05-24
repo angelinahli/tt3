@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% set activePage = "newSession" %}
+
+{% block content %}
+<div id="accordion">
+
+  <div class="card mx-auto bg-light card-form">
+    <div class="card-header" id="newSessionHeading">
+      <h3><a class="text-wellesley-blue" data-toggle="collapse" href="#newSessionForm" aria-expanded="true" aria-controls="newSessionForm">
+        Student Login
+      </a></h3>
+    </div>
+    <div id="newSessionForm" class="collapse show" aria-labelledby="newSessionHeading" data-parent="#accordion">
+      <div class="card-body">
+        <form method="POST" action="" id="newSession">
+          <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-white border border-right-0">
+                <i class="fas fa-user"></i>
+              </span>
+            </div>
+            <input type="text" id="username" name="username" class="form-control
+            border border-left-0" placeholder="Enter your Wellesley username"
+            validUsername required>
+          </div>
+          <div class="form-group" id="username-messages">
+          </div>
+          <!-- specify hidden inputs to communicate with javascript functions -->
+          <input id="autoPop" type="hidden" value="{{ autoPop }}"></input>
+          {% if autoPop %}
+          <input id="cid" name="cid" type="hidden" value="{{ cid }}"></input>
+          {% else %}
+          <input id="dept" type="hidden" value="{{ dept }}"></input>
+          <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-white border border-right-0">
+                <i class="fas fa-graduation-cap"></i>
+              </span>
+            </div>
+            <select class="form-control custom-select border border-left-0" id="course" 
+              name="course" readonly>
+              <option selected disabled>Select a course</option>
+            </select>
+          </div>
+          <br>
+          {% endif %}
+
+          <button type="submit" id="submitNewSession" name="submit" value="newSession" class="btn btn-wellesley-blue btn-lg">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mx-auto bg-light card-form">
+    <div class="card-header" id="exitSessionHeading">
+      <h3><a class="text-wellesley-blue" data-toggle="collapse" href="#exitSessionForm" aria-expanded="false" aria-controls="exitSession">
+        Tutor Logout
+      </a></3>
+    </div>
+    <div id="exitSessionForm" class="collapse" aria-labelledby="exitSessionHeading" data-parent="#accordion">
+      <div class="card-body">
+        <p class="lead"><b>Tutors Only:</b><br>
+        Click the button below when you're ready to end this session!</p>
+        <form action="" method="POST" id="exitSession">
+          <button type="submit" value="exitSession" name="submit" class="btn btn-wellesley-blue btn-lg">End Tutoring Session</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<!-- vendor js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+
+<!-- mustache templates - wrapped in raw tag to prevent jinja2 interferance -->
+{% raw %}
+<script id="inactive-option-template" type="x-tmpl-mustache"> 
+<option selected disabled>{{ text }}</option>
+</script>
+
+<script id="option-template" type="x-tmpl-mustache">
+<option value={{ value }}>{{ text }}</option>
+</script>
+
+<script id="error-msg-template" type="x-tmpl-mustache">
+<p class="text-error form-text">{{ text }}</p>
+</script>
+{% endraw %}
+
+<!-- custom js -->
+<script src="{{ url_for('static', filename='js/newSession.js') }}"></script>
+{% endblock %}
