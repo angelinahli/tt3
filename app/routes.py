@@ -23,4 +23,4 @@ def login():
     params = {"title": "Login"}
     form = LoginForm()
     params["form"] = form
-    return render_template("login.html", **params)
+    return render_template("login_mdl.html", **params)

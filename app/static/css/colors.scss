@@ -54,6 +54,11 @@ $colors: map-merge($colors, (secondary: $secondary-color));
 }
 @mixin bg-color($color-map, $color-type) {
   background-color: map-get($color-map, $color-type) !important;
+  $font-color: if(
+    map-has-key($color-map, text-color), 
+    map-get($color-map, text-color), 
+    #fff);
+  color: $font-color;
 }
 
 // basic colors
