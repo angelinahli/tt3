@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+TODO:
+    * Implement user-section m:m relations: sections_tutored, sections_taken
+      & sections_taught
+    * Implement user-tutor m:m visit relation
+        * scheduled visits can be recorded as visits with a few added
+          attributes
+    * Implement tutor-type m:m type relation
+        * Are there any type attributes we should note?
+"""
 
 from bcrypt import hashpw, checkpw, gensalt
 from datetime import datetime
@@ -20,6 +30,10 @@ class User(db.Model, UserMixin):
     user_type = db.Column(db.String(64), index=True)
     year = db.Column(db.Integer, index=True)
 
+    sections_taken = db.relationship("Section", backref="user", lazy="dynamic")
+    sections_taught = db.relationship("Section", backref="user", 
+        lazy="dynamic")
+
     def set_password(self, password):
         # password must be a byte object
         self.password_hash = hashpw(password, gensalt())
@@ -34,7 +48,6 @@ class Department(db.Model):
     __tablename__ = "department"
     __table_args__ = {"mysql_engine": "InnoDB"}
 
-    # department codes must be unique
     did = db.Column(db.String(5), primary_key=True)
     dept_name = db.Column(db.String(64), index=True, unique=True)
     # perhaps figure out what the lazy attr refers to
@@ -55,10 +68,8 @@ class Course(db.Model):
     did = db.Column(db.Integer, db.ForeignKey("department.id"),
         onupdate="cascade", index=True)
     sections = db.relationship("Section", backref="course", lazy="dynamic")
- 
-class Section(db.Model):
-    __tablename__ = "section"
-    __table_args__ = {"mysql_engine": "InnoDB"}
+
+class SemesterModel(db.Model):
     # Uncertain what the complete set of semesters looks like
     semester_codes = {
         "winter"    : 1,
@@ -71,12 +82,8 @@ class Section(db.Model):
         "spring ii" : 8,
         "fall i"    : 9,
         "fall ii"   : 10}
-
-    sid = db.Column(db.Integer, primary_key=True)
-    section_code = db.Column(db.Integer, index=True)
     year = db.Column(db.Integer, index=True)
     semester = db.Column(db.Integer, index=True)
-    cid = db.Column(db.Integer, db.ForeignKey("course.id"))
 
     def set_semester(self, s_name):
         s_name = s_name.lower()
@@ -92,3 +99,23 @@ class Section(db.Model):
             v=self.semester)
         raise Exception(msg)
 
+class Section(SemesterModel):
+    # implement taught_by, taken_by, tutored_by relations
+    __tablename__ = "section"
+    __table_args__ = {"mysql_engine": "InnoDB"}
+    sid = db.Column(db.Integer, primary_key=True)
+    section_code = db.Column(db.Integer, index=True)
+    cid = db.Column(db.Integer, db.ForeignKey("course.id"), 
+        onupdate="cascade", index=True)
+
+class Tutor(db.Model):
+    __tablename__ = "tutor"
+    __table_args__ = {"mysql_engine": "InnoDB"}
+
+    uid = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+class VisitType(db.Model):
+    # visit types probably give you information about whether the tutor is
+    # attached to 
+    __tablename__ = "visit_type"
+    __table_args__ = {"mysql_engine": "InnoDB"}
