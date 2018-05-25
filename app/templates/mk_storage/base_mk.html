@@ -23,11 +23,19 @@ description: basic html template that other html pages inherit from
   <meta name="author" content="Angelina Li, Kate Kenneally and Priscilla Lee">
   <title>{% if title %}{{ title }} - {% endif %}{{ site_name}}</title>
 
-  <!-- fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+  <!-- vendor css -->
+  <link rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet"
+  href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+  integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX"
+  crossorigin="anonymous">
 
-	<!-- css -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
+	<!-- custom css -->
+	<link rel="stylesheet" 
+  href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" 
+  href="{{ url_for('static', filename='css/colors.css') }}">
 
   <!-- page specific css -->
   {% block css %}{% endblock %}
@@ -35,7 +43,7 @@ description: basic html template that other html pages inherit from
 
 <body>
   <!-- navbar -->
-	<nav class="navbar navbar-expand-md navbar-light">
+	<nav class="navbar navbar-expand-lg navbar-light">
 		<a class="navbar-brand" href="{{ url_for('index') }}">BTTT</a>
 		
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#siteNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +52,7 @@ description: basic html template that other html pages inherit from
 
 		<div class="collapse navbar-collapse" id="siteNavbar">
 
-			<ul class="nav navbar-nav ml-auto">
+			<ul class="navbar-nav ml-auto">
 			  {% if isLoggedIn %}
 			  <!-- insert/view session options visible if user is logged in -->
         {{ make_nav_item(name='view_sessions', text='View Sessions') }}
@@ -98,12 +106,9 @@ description: basic html template that other html pages inherit from
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
   crossorigin="anonymous"></script>
-	<script 
-  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
-  crossorigin="anonymous"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" 
-  integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" 
+  <script
+  src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+  integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
   crossorigin="anonymous"></script>
 
   <!-- page specific js -->
