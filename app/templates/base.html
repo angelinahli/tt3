@@ -5,12 +5,13 @@ last modified: 05/24/2018
 description: basic html template that other html pages inherit from
 -->
 
+{% import "macros/standard.html" as macros %}
 {% set site_name = "Better Than Tutor Trac" %}
 
 <!-- useful macros -->
-{% macro make_nav_item(name, text, url=None) %}
+{% macro make_nav_item(name, text, url=None, class_="nav-link") %}
 <li class="nav-item {{ 'active' if active_page == name }}">
-  <a class="nav-link" 
+  <a class="{{ class_ }}" 
     href="{{ url_for(name) if url == None else url }}">{{ text }}</a>
 </li>
 {% endmacro %}
@@ -27,7 +28,7 @@ description: basic html template that other html pages inherit from
   <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
 
 	<!-- css -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 
   <!-- page specific css -->
   {% block css %}{% endblock %}
@@ -52,6 +53,8 @@ description: basic html template that other html pages inherit from
         {{ make_nav_item(name='logout', text='Logout', url='/logout/') }}
 				{% else %}
         {{ make_nav_item(name='login', text='Login') }}
+        {{ make_nav_item(name='sign_up', text='Sign Up', class_='btn
+        btn-outline-success') }}
 				{% endif %}
 			</ul>
 			
@@ -63,22 +66,19 @@ description: basic html template that other html pages inherit from
     <!-- not sure if this is the best way to display messages? -->
 		{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
-		<ul class="list-group">
 		{% for c, m in messages %}
-    {% if c == "error" %}
-      {% set c = "danger" %}
-    {% elif c == "message" or not c %}
-      {% set c = "info" %}
+
+    {% if c == "error" %} {% set c = "danger" %}
+    {% elif c == "message" or not c %} {% set c = "info" %}
     {% endif %}
-      <li class="list-group-item list-group-item-{{ c }}">{{ m }}</li>
+    <div class="alert alert-{{ c }}">{{ m }}</li>
 		{% endfor %}
-		</ul>
 		<br>
 		{% endif %}
 		{% endwith %}
 
-		{% if title %}
-		<h1 class="display-4">{{ title }}</h1>
+		{% if not notitle and title %}
+    {{ macros.render_title( title )}}
 		<br>
 		{% endif %}
 		{% block content %}{% endblock %}

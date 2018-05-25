@@ -8,8 +8,12 @@
         form_field=form.email,
         id="email") }}
 
+  {{ form_macros.render_form_group(
+        form_field=form.email,
+        id="email") }}
+
   {{ form_macros.render_input_text(
-        fa_tag="fas fa-key",
+        fa_tag="fas fa-lock",
         form_field=form.password,
         id="password") }}
 

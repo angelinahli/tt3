@@ -1,0 +1,21 @@
+{% extends "card_form.html" %}
+{% set active_page = "sign_up" %}
+
+{% block form_content %}
+{% call form_macros.render_form(form=form, id="sign-up") %}
+  {{ form_macros.render_input_text(
+        fa_tag="fas fa-user", 
+        form_field=form.name,
+        id="name") }}
+
+  {{ form_macros.render_input_text(
+        fa_tag="fas fa-envelope", 
+        form_field=form.email,
+        id="email") }}
+
+  {{ form_macros.render_input_text(
+        fa_tag="fas fa-lock",
+        form_field=form.password,
+        id="password") }}
+{% endcall %}
+{% endblock %}

@@ -1,3 +1,38 @@
+{### MAIN MACROS ###}
+
+{# main render_form macro - used to render forms created using wtf-forms.
+  this macro should be used within a call tag #}
+{% macro render_form(form, method="POST", action_url="", class_="", id="",
+  submit_class="btn btn-lg btn-primary") %}
+<form method="{{ method }}" action="{{ action_url }}" class="{{ class_ }}"
+    {% if id %} id="{{ id }}" {% endif %}>
+  {{ form.hidden_tag() if hidden_tag in form }}
+  {% if caller %}
+    {{ caller() }}
+  {% endif %}
+
+  {% if form.submit %}
+    <p>{{ form.submit(class_=submit_class) }}</p>
+  {% endif %}
+</form>
+{% endmacro %}
+
+{## FORM GROUP MACROS ##}
+
+{% macro render_form_group(form_field, include_errors=True, id=None) %}
+<div class="form-group">
+  {{ form_field(class_="form-control form-control-lg", placeholder=form_field.label.text, 
+    id=id) }}
+  {% if include_errors %}
+    {% for m in form_field.errors %}
+    <p class="text-error form-text">{{ m }}</p>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endmacro %}
+
+{## INPUT GROUP MACROS ##}
+
 {% macro render_input_prepend(fa_tag) %}
 <div class="input-group-prepend">
   <span class="input-group-text bg-white border border-right-0">
@@ -19,29 +54,9 @@
 {% macro render_input_text(fa_tag, form_field, include_errors=True, id=None) %}
 <div class="input-group input-group-lg">
   {{ render_input_prepend(fa_tag) }}
-  
-  {% if id %}
   {{ form_field(class_="form-control border border-left-0",
       placeholder=form_field.label.text, id=id) }}
-  {% else %}
-  {{ form_field(class_="form-control border border-left-0",
-      placeholder=form_field.label.text) }}
-  {% endif %}
 </div>
 {{ render_input_errors(form_field, include_errors, id) }}
 {% endmacro %}
 
-{% macro render_form(form, method="POST", action_url="", class_="", id="",
-  submit_class="btn btn-lg btn-primary") %}
-<form method="{{ method }}" action="{{ action_url }}" class="{{ class_ }}"
-    {% if id %} id="{{ id }}" {% endif %}>
-  {{ form.hidden_tag() if hidden_tag in form }}
-  {% if caller %}
-    {{ caller() }}
-  {% endif %}
-
-  {% if form.submit %}
-    <p>{{ form.submit(class_=submit_class) }}</p>
-  {% endif %}
-</form>
-{% endmacro %}
