@@ -1,7 +1,23 @@
-{% extends "base_mdl.html" %}
+{% extends "base_mk.html" %}
 {% set active_page = "login" %}
+{% import "macros/forms.html" as form_macros %}
 
 {% block content %}
+<form>
+  <div class="form-group">
+    <label for="inputEmail" class="bmd-label-floating">Email Address</label>
+    <input type="email" class="form-control" id="inputEmail">
+    <span class="bmd-help">We'll never share your email with anyone else.</span>
+  </div>
+  {{ form_macros.render_input_text(
+        fa_tag="fas fa-key",
+        form_field=form.password,
+        id="password") }}
+
+  <p>{{ form.remember_me(class_="form-check-input", 
+    type="checkbox", id="rememberMe") }} {{form.remember_me.label}}</p>
+</form>
+
 <form>
   <div class="form-group">
     <label for="exampleInputEmail1" class="bmd-label-floating">Email address</label>
@@ -64,8 +80,7 @@
       <input type="checkbox"> Check me out
     </label>
   </div>
-  <button class="btn btn-primary">Cancel</button>
+  <button class="btn btn-default">Cancel</button>
   <button type="submit" class="btn btn-primary btn-raised">Submit</button>
 </form>
-
 {% endblock %}
