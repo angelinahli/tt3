@@ -8,6 +8,11 @@
 @import "custom";  // distribution specific colorscheme
 @import "../vendor/bootstrap/scss/bootstrap";
 
+@mixin use_bg_image($url) {
+	background-image: url($url);
+	background-repeat: repeat;
+}
+
 html {
   position: relative;
   min-height: 100%;

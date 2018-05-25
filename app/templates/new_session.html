@@ -1,69 +1,52 @@
 {% extends "base.html" %}
 {% set active_page = "new_session" %}
+{% import "macros/standard.html" as macros %}
 {% import "macros/forms.html" as form_macros %}
 
 {% block content %}
 <div id="accordion">
+  
+  {% call macros.render_acc_card(
+        id="new_session",
+        title="Student Login",
+        expanded="true") %}
+    {% call form_macros.render_form(
+          form=new_session_form,
+          submit_value="new_session") %}
 
-  <div class="card mx-auto bg-light card-form">
-    <div class="card-header" id="newSessionHeading">
-      <h3><a data-toggle="collapse" href="#newSessionForm" aria-expanded="true" aria-controls="newSessionForm">
-        Student Login
-      </a></h3>
-    </div>
-    <div id="newSessionForm" class="collapse show" aria-labelledby="newSessionHeading" data-parent="#accordion">
-      <div class="card-body">
-        <form method="POST" action="" id="newSession">
-          {{ form.hidden_tag() }}
-
-          {{ form_macros.render_input_text(
-                fa_tag="fas fa-user",
-                form_field=form.username,
-                id="username") }} 
-
-          <!-- specify hidden inputs to communicate with javascript functions -->
-          <input id="autoPop" type="hidden" value="{{ autoPop }}"></input>
-          {% if autoPop %}
-          <input id="cid" name="cid" type="hidden" value="{{ cid }}"></input>
-          {% else %}
-          <input id="dept" type="hidden" value="{{ dept }}"></input>
-          <div class="input-group input-group-lg">
-            <div class="input-group-prepend">
-              <span class="input-group-text bg-white border border-right-0">
-                <i class="fas fa-graduation-cap"></i>
-              </span>
-            </div>
-            <select class="form-control custom-select border border-left-0" id="course" 
-              name="course" readonly>
-              <option selected disabled>Select a course</option>
-            </select>
-          </div>
-          <br>
-          {% endif %}
-
-          <button type="submit" id="submitNewSession" name="submit"
-              value="newSession" class="btn btn-primary btn-lg">Submit</button>
-        </form>
+      {{ form_macros.render_form_group(
+            form_field=new_session_form.username,
+            id="username") }} 
+      <!-- specify hidden inputs to communicate with javascript functions -->
+      <input id="autoPop" type="hidden" value="{{ autoPop }}"></input>
+      {% if autoPop %}
+      <input id="cid" name="cid" type="hidden" value="{{ cid }}"></input>
+      {% else %}
+      <input id="dept" type="hidden" value="{{ dept }}"></input>
+      <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border border-right-0">
+            <i class="fas fa-graduation-cap"></i>
+          </span>
+        </div>
+        <select class="form-control custom-select border border-left-0" id="course" 
+          name="course" readonly>
+          <option selected disabled>Select a course</option>
+        </select>
       </div>
-    </div>
-  </div>
+      <br>
+      {% endif %}
 
-  <div class="card mx-auto bg-light card-form">
-    <div class="card-header" id="exitSessionHeading">
-      <h3><a data-toggle="collapse" href="#exitSessionForm" aria-expanded="false" aria-controls="exitSession">
-        Tutor Logout
-      </a></3>
-    </div>
-    <div id="exitSessionForm" class="collapse" aria-labelledby="exitSessionHeading" data-parent="#accordion">
-      <div class="card-body">
-        <p class="lead"><b>Tutors Only:</b><br>
-        Click the button below when you're ready to end this session!</p>
-        <form action="" method="POST" id="exitSession">
-          <button type="submit" value="exitSession" name="submit" class="btn btn-wellesley-blue btn-lg">End Tutoring Session</button>
-        </form>
-      </div>
-    </div>
-  </div>
+    {% endcall %}
+  {% endcall %}
+
+  {% call macros.render_acc_card(
+        id="tutor_exit",
+        title="Tutor Logout") %}
+    <p class="lead"><b>Tutors Only:</b><br>
+    Click the button below when you're ready to end this session!</p>
+    {{ form_macros.render_form(form=tutor_exit_form, submit_value="tutor_exit") }}
+  {% endcall %}
 
 </div>
 {% endblock %}

@@ -14,7 +14,17 @@ class LoginForm(FlaskForm):
         validators=[DataRequired()])
     password = wtf.PasswordField("Password", validators=[DataRequired()])
     remember_me = wtf.BooleanField("Remember Me")
-    submit = wtf.SubmitField("Sign In")
+    submit = wtf.SubmitField("Login")
+
+class SignUpForm(FlaskForm):
+    name = wtf.StringField(
+        "Enter your name",
+        validators=[DataRequired()])
+    email = wtf.StringField(
+        "Enter your Wellesley email",
+        validators=[DataRequired()])
+    password = wtf.PasswordField("Password", validators=[DataRequired()])
+    submit = wtf.SubmitField("Sign up")
 
 class NewSessionForm(FlaskForm):
     username = wtf.StringField(

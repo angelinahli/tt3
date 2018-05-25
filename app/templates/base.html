@@ -6,10 +6,11 @@ description: basic html template that other html pages inherit from
 -->
 
 {% import "macros/standard.html" as macros %}
+{% import "macros/modals.html" as modal_macros %}
 {% set site_name = "Better Than Tutor Trac" %}
 
 <!-- useful macros -->
-{% macro make_nav_item(name, text, url=None, class_="nav-link") %}
+{% macro render_nav_item(name, text, url=None, class_="nav-link") %}
 <li class="nav-item {{ 'active' if active_page == name }}">
   <a class="{{ class_ }}" 
     href="{{ url_for(name) if url == None else url }}">{{ text }}</a>
@@ -27,7 +28,7 @@ description: basic html template that other html pages inherit from
   <!-- fonts -->
   <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
 
-	<!-- css -->
+  <!-- css -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 
   <!-- page specific css -->
@@ -36,73 +37,84 @@ description: basic html template that other html pages inherit from
 
 <body>
   <!-- navbar -->
-	<nav class="navbar navbar-expand-md navbar-light">
-		<a class="navbar-brand" href="{{ url_for('index') }}">BTTT</a>
-		
+  <nav class="navbar navbar-expand-md navbar-light">
+    <a class="navbar-brand" href="{{ url_for('index') }}">BTTT</a>
+    
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#siteNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-		<div class="collapse navbar-collapse" id="siteNavbar">
+    <div class="collapse navbar-collapse" id="siteNavbar">
 
-			<ul class="nav navbar-nav ml-auto">
-			  {% if isLoggedIn %}
-			  <!-- insert/view session options visible if user is logged in -->
-        {{ make_nav_item(name='view_sessions', text='View Sessions') }}
-				<!-- login/logout options via CAS -->
-        {{ make_nav_item(name='logout', text='Logout', url='/logout/') }}
-				{% else %}
-        {{ make_nav_item(name='login', text='Login') }}
-        {{ make_nav_item(name='sign_up', text='Sign Up', class_='btn
-        btn-outline-success') }}
-				{% endif %}
-			</ul>
-			
-		</div>
-	</nav>
+      <ul class="nav navbar-nav ml-auto">
+        {% if isLoggedIn %}
+        <!-- insert/view session options visible if user is logged in -->
+        {{ render_nav_item(name='view_sessions', text='View Sessions') }}
+        <!-- login/logout options via CAS -->
+        {{ render_nav_item(name='logout', text='Logout', url='/logout/') }}
+        {% else %}
+        <form class="form-inline">
+        {{ modal_macros.render_modal_btn(
+                target_id="login_modal", 
+                color="link", 
+                text="Login") }}
+        {{ modal_macros.render_modal_btn(
+                target_id="sign_up_modal",
+                color="outline-success",
+                text="Sign Up") }}
+        </form>
+        {% endif %}
+      </ul>
+      
+    </div>
+  </nav>
 
-	<div class="container text-center">
-		<!-- flashed messages -->
-    <!-- not sure if this is the best way to display messages? -->
-		{% with messages = get_flashed_messages(with_categories=true) %}
-		{% if messages %}
-		{% for c, m in messages %}
+  <!-- render modals -->
+  {% if not is_logged_in %}
+  {{ modal_macros.render_login(login_form) }}
+  {{ modal_macros.render_sign_up(sign_up_form) }}
+  {% endif %}
 
+  <div class="container text-center">
+    <!-- flashed messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+
+    {% for c, m in messages %}
     {% if c == "error" %} {% set c = "danger" %}
     {% elif c == "message" or not c %} {% set c = "info" %}
     {% endif %}
     <div class="alert alert-{{ c }}">{{ m }}</li>
-		{% endfor %}
-		<br>
-		{% endif %}
-		{% endwith %}
+    {% endfor %}
+    <br>
 
-		{% if not notitle and title %}
+    {% endif %}
+    {% endwith %}
+
+    {% if not notitle and title %}
     {{ macros.render_title( title )}}
-		<br>
-		{% endif %}
-		{% block content %}{% endblock %}
-	</div>
+    <br>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
 
-	<!-- footer -->
-	<footer class="footer">
-		<div class="container text-muted text-center">
-			Written by Angelina Li, Kate Kenneally and Priscilla Lee. <a href="https://github.com/Wellesley-CS304-SP18/semester-project-betterthantutortrac">Source code here.</a>
-		</div>
-	</footer>
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container text-muted text-center">
+      Written by Angelina Li, Kate Kenneally and Priscilla Lee. <a href="https://github.com/Wellesley-CS304-SP18/semester-project-betterthantutortrac">Source code here.</a>
+    </div>
+  </footer>
 
-	<!-- vendor js -->
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" 
+  <!-- vendor js -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" 
   crossorigin="anonymous"></script>
   <script 
   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
   crossorigin="anonymous"></script>
-	<script 
-  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
-  crossorigin="anonymous"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" 
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+  <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" 
   integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" 
   crossorigin="anonymous"></script>
 

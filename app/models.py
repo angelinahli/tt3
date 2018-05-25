@@ -17,6 +17,16 @@ from flask_login import UserMixin
 
 from app import db, login
 
+user_sections_taken = db.Table("association", 
+    db.Column("pid", db.Integer, db.ForeignKey("user.pid")),
+    db.Column("sid", db.Integer, db.ForeignKey("section.sid"))
+)
+
+user_sections_taught = db.Table("association",
+    db.Column("pid", db.Integer, db.ForeignKey("user.pid")),
+    db.Column("sid", db.Integer, db.ForeignKey("section.sid"))
+)
+
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     __table_args__ = {"mysql_engine": "InnoDB"}
@@ -30,9 +40,8 @@ class User(db.Model, UserMixin):
     user_type = db.Column(db.String(64), index=True)
     year = db.Column(db.Integer, index=True)
 
-    sections_taken = db.relationship("Section", backref="user", lazy="dynamic")
-    sections_taught = db.relationship("Section", backref="user", 
-        lazy="dynamic")
+    sections_taken = db.relationship("Section", secondary=user_sections_taken)
+    sections_taught = db.relationship("Section", secondary=user_sections_taught)
 
     def set_password(self, password):
         # password must be a byte object
@@ -103,6 +112,7 @@ class Section(SemesterModel):
     # implement taught_by, taken_by, tutored_by relations
     __tablename__ = "section"
     __table_args__ = {"mysql_engine": "InnoDB"}
+
     sid = db.Column(db.Integer, primary_key=True)
     section_code = db.Column(db.Integer, index=True)
     cid = db.Column(db.Integer, db.ForeignKey("course.id"), 

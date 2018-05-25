@@ -1,3 +1,38 @@
-{% macro render_title(text, class_="display-4") %}
-<h1 class="{{ class_ }}">{{ text }}</h1>
+{# filename: standard.html
+ # author: Angelina Li
+ # last modified: 05/25/2018
+ # desc: Standard macros used to generate generic bootstrap components #}
+
+ {## TEXT MACROS ##}
+
+{# Can be run using either call or directly passing text through #}
+{% macro render_title(text=None, class_="display-4", id="") %}
+<h1 id="{{ id }}" class="{{ class_ }}">
+{% if caller %}
+	{{ caller() }}
+{% else %}
+	{{ text }}
+{% endif %}
+</h1>
+{% endmacro %}
+
+{## CARD MACROS ##}
+
+{# Designed to use with call to populate card-body #}
+{% macro render_acc_card(id, title, expanded="false", class_="mx-auto bg-light card-form") %}
+<div class="card {{ class_ }}">
+	<div class="card-header" id="{{ id }}_heading">
+		{% call render_title() %}
+			<a data-toggle="collapse" href="#{{ id }}" aria-expanded="{{ expanded }}" aria-controls="{{ id }}">
+				{{ title }}
+			</a>
+		{% endcall %}
+	</div>
+
+	<div id="{{ id }}" class="collapse show" aria-labelledby="{{ id }}_heading" data-parent="#accordion">
+		<div class="card-body">
+		{% if caller %} {{ caller() }} {% endif %}
+		</div>
+	</div>
+</div>
 {% endmacro %}

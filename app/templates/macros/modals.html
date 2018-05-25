@@ -1,0 +1,66 @@
+{% import "macros/standard.html" as macros %}
+{% import "macros/forms.html" as form_macros %}
+
+{## HELPER MACROS ##}
+
+{% macro render_modal_btn(target_id, color, text) %}
+<button type="button" class="btn btn-{{ color }}" data-toggle="modal" data-target="#{{ target_id }}">
+  {{ text }}
+</button> 
+{% endmacro %}
+
+{% macro render_modal(title, id, btn_text="Submit", class_="modal-lg") %}
+<div class="modal fade" id="{{ id }}" tabindex="-1" role="dialog" aria-labelledby="{{ id }}-label" aria-hidden="true">
+  <div class="modal-dialog {{ class_ }}" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        {{ macros.render_title(text=title, class_="modal-title", id=[id, "-label"]|join("") ) }}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body {{ 'text_center' if body_center }}">
+      {% if caller %} {{ caller() }} {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-{{id}}">{{ btn_text }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{## TEMPLATES FOR SPECIFIC MODALS ##}
+
+{% macro render_sign_up(form) %}
+{% call render_modal(title="Sign Up", id="sign_up_modal") %}
+    {% call form_macros.render_form(form=form, id="sign-up", nosubmit=True) %}
+      {{ form_macros.render_form_group(
+            form_field=form.name,
+            id="signup_name") }}
+      {{ form_macros.render_form_group(
+            form_field=form.email,
+            id="signup_email") }}
+      {{ form_macros.render_form_group(
+            form_field=form.password,
+            id="signup_password") }}
+    {% endcall %}
+  {% endcall %}
+{% endmacro %}
+
+{% macro render_login(form) %}
+{% call render_modal(title="Login", id="login_modal") %}
+    {% call form_macros.render_form(form=form, id="login", nosubmit=True) %}
+      {{ form_macros.render_form_group(
+            form_field=form.email,
+            id="login_email") }}
+      {{ form_macros.render_form_group(
+            form_field=form.password,
+            id="login_password") }}
+      {{ form_macros.render_form_check(
+            form_field=form.remember_me,
+            id="login_remember_me") }}
+    {% endcall %}
+ {% endcall %}
+{% endmacro %}
