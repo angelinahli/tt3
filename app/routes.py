@@ -16,22 +16,15 @@ from app.forms import LoginForm, SignUpForm
 @app.route("/index/")
 def index():
     params = {}
-    login_form = LoginForm()
-    sign_up_form = SignUpForm()
-    params["login_form"] = login_form
-    params["sign_up_form"] = sign_up_form
+
+    is_logged_in = lambda: False
+
+    if not is_logged_in(): # implement this
+        login_form = LoginForm()
+        sign_up_form = SignUpForm()
+        params["login_form"] = login_form
+        params["sign_up_form"] = sign_up_form
+
+    else:
+        u = current_user # implement this
     return render_template("index.html", **params)
-
-@app.route("/login/")
-def login():
-    params = {"title": "Login", "notitle": True}
-    form = LoginForm()
-    params["form"] = form
-    return render_template("login.html", **params)
-
-@app.route("/signup/")
-def sign_up():
-    params = {"title": "Sign Up", "notitle": True}
-    form = SignUpForm()
-    params["form"] = form
-    return render_template("sign_up.html", **params)
