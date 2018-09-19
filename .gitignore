@@ -4,5 +4,6 @@ __pycache__/*
 *.pyc
 *.swp
 
-config/
+configurations.py
+sensitive/
 old/

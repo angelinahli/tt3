@@ -16,5 +16,28 @@
 * Allow administrators to conduct the relevant data analysis in the browser.
     * Automatically run reports. What are the kind of data that you would like?
 
+## Screen Caps
+
+##### Home Page - Login Prompt
+![home page - login](images/login.png)
+
+##### Home Page - After Logging In
+![home page - after logging in](images/home_page.png)
+
+##### Track Session - Session Login
+![track session - session login](images/session_login.png)
+
+##### Track Session - Session End
+![track session - session end](images/session_end.png)
+
+##### View Sessions - Paginated View
+![view sessions - paginated view](images/paginated_view.png)
+
+##### View Sessions - Update
+![view sessions - update](images/update.png)
+
+##### View Sessions - Delete
+![view sessions - delete](images/delete.png)
+
 ### TODO
 * Create database

@@ -16,7 +16,6 @@ from app.forms import LoginForm, SignUpForm
 @app.route("/index/")
 def index():
     params = {}
-
     is_logged_in = lambda: False
 
     if not is_logged_in(): # implement this

@@ -17,12 +17,12 @@ from flask_login import UserMixin
 
 from app import db, login
 
-user_sections_taken = db.Table("association", 
+user_sections_taken = db.Table("user_sections_taken", 
     db.Column("pid", db.Integer, db.ForeignKey("user.pid")),
     db.Column("sid", db.Integer, db.ForeignKey("section.sid"))
 )
 
-user_sections_taught = db.Table("association",
+user_sections_taught = db.Table("user_sections_taught",
     db.Column("pid", db.Integer, db.ForeignKey("user.pid")),
     db.Column("sid", db.Integer, db.ForeignKey("section.sid"))
 )
@@ -78,7 +78,7 @@ class Course(db.Model):
         onupdate="cascade", index=True)
     sections = db.relationship("Section", backref="course", lazy="dynamic")
 
-class SemesterModel(db.Model):
+class SemesterModel:
     # Uncertain what the complete set of semesters looks like
     semester_codes = {
         "winter"    : 1,
@@ -108,7 +108,7 @@ class SemesterModel(db.Model):
             v=self.semester)
         raise Exception(msg)
 
-class Section(SemesterModel):
+class Section(db.Model, SemesterModel):
     # implement taught_by, taken_by, tutored_by relations
     __tablename__ = "section"
     __table_args__ = {"mysql_engine": "InnoDB"}
@@ -118,13 +118,13 @@ class Section(SemesterModel):
     cid = db.Column(db.Integer, db.ForeignKey("course.id"), 
         onupdate="cascade", index=True)
 
-class Tutor(db.Model):
+class Tutor:
     __tablename__ = "tutor"
     __table_args__ = {"mysql_engine": "InnoDB"}
 
     uid = db.Column(db.Integer, db.ForeignKey("user.id"))
 
-class VisitType(db.Model):
+class VisitType:
     # visit types probably give you information about whether the tutor is
     # attached to 
     __tablename__ = "visit_type"
